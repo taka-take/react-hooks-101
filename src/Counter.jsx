@@ -2,12 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 
 const Counter = () => {
   const [count, setCount] = useState(0);
-
-  const prevCountRef = useRef(0);
-  useEffect(() => {
-    prevCountRef.current = count;
-  });
-  const prevCount = prevCountRef.current;
+  const prevCount = usePrevious(count);
 
   return (
     <>
@@ -18,6 +13,14 @@ const Counter = () => {
       <button onClick={() => setCount(count - 1)}>-1</button>
     </>
   );
+};
+
+const usePrevious = value => {
+  const ref = useRef(value);
+  useEffect(() => {
+    ref.current = value;
+  });
+  return ref.current;
 };
 
 export default Counter;
