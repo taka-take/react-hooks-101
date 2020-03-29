@@ -1,5 +1,10 @@
 import React from 'react';
+import Counter from './Counter';
 
-const App = () => <div>This is a template for React app.</div>;
+const App = () => (
+  <div>
+    <Counter />
+  </div>
+);
 
 export default App;
