@@ -1,7 +1,13 @@
 import React, { useContext, useState } from 'react';
 
-import { CREATE_EVENT, DELETE_ALL_EVENTS } from '../actions';
+import {
+  CREATE_EVENT,
+  DELETE_ALL_EVENTS,
+  ADD_OPERATION_LOG,
+  DELETE_ALL_OPERATION_LOGS,
+} from '../actions';
 import AppContext from '../contexts/AppContext';
+import { timeCurrentIso8601 } from '../utils';
 
 const EventForm = () => {
   const { state, dispatch } = useContext(AppContext);
@@ -17,6 +23,13 @@ const EventForm = () => {
       body,
     });
 
+    const operatedAt = timeCurrentIso8601();
+    dispatch({
+      type: ADD_OPERATION_LOG,
+      description: 'イベントを作成しました。',
+      operatedAt,
+    });
+
     setTitle('');
     setBody('');
   };
@@ -27,6 +40,12 @@ const EventForm = () => {
     if (result) {
       dispatch({
         type: DELETE_ALL_EVENTS,
+      });
+      const operatedAt = timeCurrentIso8601();
+      dispatch({
+        type: ADD_OPERATION_LOG,
+        description: '全てのイベントを削除しました。',
+        operatedAt,
       });
     }
   };
